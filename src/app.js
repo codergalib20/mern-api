@@ -6,6 +6,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 // Connect all routes
 const auth = require("./routes/auth");
+const post = require("./routes/post");
 // User All Middleware
 app.use(express.json());
 app.use(cors());
@@ -28,6 +29,7 @@ async function main() {
 
 function routes() {
     app.use("/api/auth", auth);
+    app.use("/api/posts", post);
 }
 
 app.listen(port, () => {
