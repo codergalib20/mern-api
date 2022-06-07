@@ -36,7 +36,7 @@ posts.get("/posts", async (req, res) => {
     }
 })
 // Delete post
-posts.delete("/del/post/:id", checkLogin, async (req, res) => {
+posts.delete("/del/post/:id", async (req, res) => {
     try {
         const deletePost = await Post.findByIdAndDelete(req.params.id);
         if (deletePost) {
