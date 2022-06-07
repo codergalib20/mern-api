@@ -1,7 +1,6 @@
 const express = require("express");
 const Post = require("../schema/post");
 const posts = express.Router();
-const checkLogin = require("../middleware/checkLogin");
 posts.post("/post", async (req, res) => {
     try {
         const newPost = new Post({
