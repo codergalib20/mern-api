@@ -35,3 +35,4 @@ comment.get('/:postId', async (req, res) => {
     }
 })
 module.exports = comment;
+// ok
