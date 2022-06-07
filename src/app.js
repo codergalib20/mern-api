@@ -9,30 +9,71 @@ const cooker = require("cookie-parser");
 const auth = require("./routes/auth");
 const posts = require("./routes/post");
 // User All Middleware
-app.use(express.json());
-app.use(cors());
 app.use(cooker());
-main().catch(err => console.error(err));
-async function main() {
-    try {
-        await mongoose.connect(`${process.env.MONGO_URI}`, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-            .then(() => console.log("Connect with server"))
-            .catch(err => console.log(err));
-        // Call Routes function
-        await routes();
-    }
-    catch (err) {
-        console.log(err);
-    }
-}
+app.use(express.json());
+app.options("*", cors({ origin: "*", optionsSuccessStatus: 200 }));
+app.use(cors({ origin: "*", optionsSuccessStatus: 200 }));
+// SETUP RESPONSE HEADERS MIDDLEWARE OR ACCESS CONTROL HEADERS
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.setHeader(
+        "Acces-Control-Allow-Methods",
+        "GET,POST,PUT,PATCH,DELETE",
+        "OPTIONS"
+    );
+    res.setHeader(
+        "Acces-Contorl-Allow-Methods",
+        "Content-Type",
+        "application/json"
+    );
+    next();
+});
+
+
+
+
+mongoose.connect(`${process.env.MONGO_URI}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => console.log("Connect with server"))
+    .catch(err => console.log(err));
+// Call Routes function
+routes();
 
 function routes() {
     app.use("/api/auth", auth);
     app.use("/api/posts", posts);
 }
+app.all("*", function (req, res, next) {
+    res.header("Access-Control-Allow-Headers : Origin, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
+});
+// first route
+app.get("/", (req, res) => {
+    res.send("This is Brain skill server");
+});
+
+// Undefined Route Implement
+app.use((req, res, next) => {
+    res.status(404).json({ error: true, message: "Not Found this route" });
+});
+
+// Error Route Implement
+const errorHandler = (err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
+    res.status(500).json({ error: err });
+}
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Application running in port no ${port}`);

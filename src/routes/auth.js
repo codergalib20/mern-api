@@ -2,6 +2,7 @@ const User = require("../schema/auth");
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const checkLogin = require("../middlewares/checkLogin");
 // CREATE A NEW USER
 const user = express.Router();
 user.post("/signup", async (req, res) => {
@@ -66,6 +67,25 @@ user.post("/signin", async (req, res) => {
       }
     } else {
       return res.status(400).json({ error: "User does not Found!" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// GET ALL LOGIN USER DATA
+user.get("/profile", checkLogin, async (req, res) => {
+  try {
+    const userData = await User.findOne({ _id: req.userId, username: req.username });
+    if (userData) {
+      res.status(200).json({
+        userData
+      });
+    } else {
+      res.status(404).json({
+        error: "User not found"
+      });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
