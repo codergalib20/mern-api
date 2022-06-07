@@ -53,8 +53,12 @@ posts.delete("/del/post/:id", async (req, res) => {
     }
 })
 posts.patch("/update/post/:id", async (req, res) => {
+    console.log(req.body);
     try {
-        const updatePost = await Post.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        const updatePost = await Post.findOneAndUpdate({ _id: req.params.id }, {
+            title: req.body.title,
+            description: req.body.description,
+        }, {
             new: true,
         });
         if (updatePost) {

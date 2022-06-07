@@ -8,6 +8,7 @@ const cooker = require("cookie-parser");
 // Connect all routes
 const auth = require("./routes/auth");
 const posts = require("./routes/post");
+const comments = require("./routes/comment");
 // User All Middleware
 app.use(cooker());
 app.use(express.json());
@@ -48,6 +49,7 @@ routes();
 function routes() {
     app.use("/api/auth", auth);
     app.use("/api/posts", posts);
+    app.use("/api/comments", comments);
 }
 app.all("*", function (req, res, next) {
     res.header("Access-Control-Allow-Headers : Origin, Content-Type, Accept");
