@@ -20,5 +20,18 @@ comment.post('/', async (req, res) => {
         res.status(400).send('Comment not create');
     }
 })
-
+comment.get('/:postId', async (req, res) => {
+    try {
+        const data = Comment.find({ postId: req.params.postId })
+        res.status(200).json({
+            data,
+            message: "Comment Loaded"
+        })
+    } catch (err) {
+        res.status(404).json({
+            error: "Faild to comment Load"
+        })
+        console.log(err);
+    }
+})
 module.exports = comment;
