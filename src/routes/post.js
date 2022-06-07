@@ -1,6 +1,7 @@
 const express = require("express");
 const Post = require("../schema/post");
 const posts = express.Router();
+const checkLogin = require("../middleware/checkLogin");
 posts.post("/post", async (req, res) => {
     try {
         const newPost = new Post({
@@ -35,7 +36,7 @@ posts.get("/posts", async (req, res) => {
     }
 })
 // Delete post
-posts.delete("/post/:id", async (req, res) => {
+posts.delete("/del/post/:id", checkLogin, async (req, res) => {
     try {
         const deletePost = await Post.findByIdAndDelete(req.params.id);
         if (deletePost) {
