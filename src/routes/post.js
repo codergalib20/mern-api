@@ -54,13 +54,9 @@ posts.delete("/del/post/:id", async (req, res) => {
 })
 posts.patch("/update/post/:id", async (req, res) => {
     try {
-        const updatePost = await Post.updateOne({ _id: req.params.id },
-            {
-                $set: {
-                    title: req.body.title,
-                    description: req.body.description,
-                }
-            });
+        const updatePost = await Post.findOneAndUpdate({ _id: req.params.id }, req.body, {
+            new: true,
+        });
         if (updatePost) {
             res.status(200).json({
                 message: "Post updated successfully",
