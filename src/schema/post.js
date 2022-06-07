@@ -13,9 +13,9 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    postedBy: {
-        type: ObjectId,
-        ref: "User"
+    username: {
+        type: String,
+        required: true
     }
 });
 const Post = new mongoose.model("Post", postSchema);
