@@ -19,7 +19,6 @@ const commentSchema = new mongoose.Schema({
     },
     userImage: {
         type: String,
-        required: true
     }
 
 })
