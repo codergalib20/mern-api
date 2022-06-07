@@ -4,12 +4,14 @@ const cors = require("cors");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const app = express();
+const cooker = require("cookie-parser");
 // Connect all routes
 const auth = require("./routes/auth");
-const post = require("./routes/post");
+const posts = require("./routes/post");
 // User All Middleware
 app.use(express.json());
 app.use(cors());
+app.use(cooker());
 main().catch(err => console.error(err));
 async function main() {
     try {
@@ -29,7 +31,7 @@ async function main() {
 
 function routes() {
     app.use("/api/auth", auth);
-    app.use("/api/posts", post);
+    app.use("/api/posts", posts);
 }
 
 app.listen(port, () => {

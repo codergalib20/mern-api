@@ -1,7 +1,7 @@
 const express = require("express");
 const Post = require("../schema/post");
-const post = express.Router();
-post.post("/post", async (req, res) => {
+const posts = express.Router();
+posts.post("/post", async (req, res) => {
     try {
         const newPost = new Post({
             title: req.body.title,
@@ -19,3 +19,18 @@ post.post("/post", async (req, res) => {
         console.log(err);
     }
 })
+// GET ALL POSTS
+posts.get("/posts", async (req, res) => {
+    try {
+        const data = await Post.find();
+        if (data) {
+            res.status(200).json({ data, message: "Post Loaded successfully!  " });
+        }
+        else {
+            res.status(500).json({ error: "Failed to get all posts" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+})
+module.exports = posts;
