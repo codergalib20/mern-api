@@ -37,7 +37,7 @@ posts.get("/posts", async (req, res) => {
 // Delete post
 posts.delete("/del/post/:id", async (req, res) => {
     try {
-        const deletePost = await Post.findByIdAndDelete(req.params.id);
+        const deletePost = await Post.findByIdAndDelete({ _id: req.params.id });
         if (deletePost) {
             res.status(200).json({
                 message: "Post deleted successfully",
