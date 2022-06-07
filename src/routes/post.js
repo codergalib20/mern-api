@@ -38,7 +38,7 @@ posts.get("/posts", async (req, res) => {
 posts.delete("/del/post/:id", async (req, res) => {
     console.log(req.params.id)
     try {
-        const deletePost = await Post.deleteOne({_id:req.params.id});
+        const deletePost = await Post.deleteOne({ _id: req.params.id });
         if (deletePost) {
             res.status(200).json({
                 message: "Post deleted successfully",
@@ -52,4 +52,27 @@ posts.delete("/del/post/:id", async (req, res) => {
         console.log(err);
     }
 })
+posts.patch("/update/post/:id", async (req, res) => {
+    try {
+        const updatePost = await Post.updateOne({ _id: req.params.id },
+            {
+                $set: {
+                    title: req.body.title,
+                    description: req.body.description,
+                }
+            });
+        if (updatePost) {
+            res.status(200).json({
+                message: "Post updated successfully",
+                data: updatePost
+            });
+        }
+        else {
+            res.status(500).json({ error: "Failed to update post" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+})
+
 module.exports = posts;
