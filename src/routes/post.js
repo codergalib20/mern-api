@@ -6,7 +6,8 @@ posts.post("/post", async (req, res) => {
         const newPost = new Post({
             title: req.body.title,
             description: req.body.description,
-            image: req.body.image
+            image: req.body.image,
+            username: req.body.username
         });
         const savePost = await newPost.save();
         if (savePost) {
