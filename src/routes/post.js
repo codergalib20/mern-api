@@ -34,4 +34,21 @@ posts.get("/posts", async (req, res) => {
         console.log(err);
     }
 })
+// Delete post
+posts.delete("/post/:id", async (req, res) => {
+    try {
+        const deletePost = await Post.findByIdAndDelete(req.params.id);
+        if (deletePost) {
+            res.status(200).json({
+                message: "Post deleted successfully",
+                data: deletePost
+            });
+        }
+        else {
+            res.status(500).json({ error: "Failed to delete post" });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+})
 module.exports = posts;
