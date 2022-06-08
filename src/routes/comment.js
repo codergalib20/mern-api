@@ -1,6 +1,7 @@
 const Comment = require('../schema/comment');
 const express = require('express');
 const comment = express.Router();
+// Make a new comment
 comment.post('/', async (req, res) => {
     try {
         const newComment = await new Comment({
@@ -20,18 +21,32 @@ comment.post('/', async (req, res) => {
         res.status(400).send('Comment not create');
     }
 })
-comment.get('/:postId', async (req, res) => {
+// Load all comments
+comment.get("/", async (req, res) => {
     try {
-        const data = Comment.find({ postId: req.params.postId })
-        res.status(200).json({
-            data,
-            message: "Comment Loaded"
-        })
+        const data = await Comment.find();
+        if (data) {
+            res.status(200).json({ data, message: "Comment Loaded successfully!  " });
+        }
+        else {
+            res.status(500).json({ error: "Failed to get all comments" });
+        }
     } catch (err) {
-        res.status(404).json({
-            error: "Faild to comment Load"
-        })
         console.log(err);
+    }
+})
+// Delete comment
+comment.get('/single/:id', async (req, res) => {
+    try {
+        const data = await Comment.find({ postId: req.params.id });
+        res.status(200).json({
+            message: 'Comment loaded successfully',
+            data
+        });
+    } catch (error) {
+        res.status(404).json({
+            message: 'Comment not found'
+        })
     }
 })
 module.exports = comment;
