@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        select: false,
     },
     avatar: {
         type: String,
@@ -25,7 +26,8 @@ const userSchema = new mongoose.Schema({
         {
             token: {
                 type: String,
-                required: true
+                required: true,
+                select: false,
             }
         }
     ],

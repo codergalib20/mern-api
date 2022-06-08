@@ -72,8 +72,20 @@ user.post("/signin", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
+// GET ALL USERS
+user.get("/users", async (req, res) => {
+  try {
+    const data = await User.find({});
+    if (data) {
+      res.status(200).json({ data, message: "User Loaded successfully!  " });
+    }
+    else {
+      res.status(500).json({ error: "Failed to get all users" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+})
 // GET ALL LOGIN USER DATA
 user.get("/profile", checkLogin, async (req, res) => {
   try {
