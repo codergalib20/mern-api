@@ -11,7 +11,7 @@ posts.post("/post", async (req, res) => {
         });
         const savePost = await newPost.save();
         if (savePost) {
-            res.status(201).json({ message: "Post created successfully" });
+            res.status(201).json({ message: "Post created successfully", data: savePost });
         }
         else {
             res.status(500).json({ error: "Failed to create post" });
