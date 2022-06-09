@@ -16,6 +16,17 @@ const postSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true
+    },
+    likes: [
+        {
+            type: ObjectId,
+            ref: "User"
+        }
+    ]
+    ,
+    creatAt: {
+        type: Date,
+        default: Date.now
     }
 });
 const Post = new mongoose.model("Post", postSchema);

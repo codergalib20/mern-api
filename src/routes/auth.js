@@ -41,6 +41,7 @@ user.post("/signup", async (req, res) => {
 
 // LOGIN USER
 user.post("/signin", async (req, res) => {
+  console.log(req.body);
   try {
     // let token
     const { username, password } = req.body;
@@ -48,6 +49,7 @@ user.post("/signin", async (req, res) => {
       return res.status(400).json({ error: "Please enter all fields" });
     }
     const userLogging = await User.findOne({ username });
+    console.log(userLogging);
     if (userLogging) {
       const isMatch = await bcrypt.compare(password, userLogging.password);
       // token = await userLogging.generateAuthToken();
@@ -88,6 +90,7 @@ user.get("/users", async (req, res) => {
 })
 // GET ALL LOGIN USER DATA
 user.get("/profile", checkLogin, async (req, res) => {
+  
   try {
     const userData = await User.findOne({ _id: req.userId, username: req.username });
     if (userData) {

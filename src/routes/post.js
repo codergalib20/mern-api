@@ -1,6 +1,7 @@
 const express = require("express");
 const Post = require("../schema/post");
 const posts = express.Router();
+const checkLogin = require("../middlewares/checkLogin");
 posts.post("/post", async (req, res) => {
     try {
         const newPost = new Post({
@@ -72,6 +73,52 @@ posts.patch("/update/post/:id", async (req, res) => {
         }
     } catch (err) {
         console.log(err);
+    }
+});
+
+posts.put("/like/post", checkLogin, async (req, res) => {
+    console.log(req.body.id);
+    try {
+        const data = await Post.findOneAndUpdate(
+            { _id: req.body.id }, {
+            $push: {
+                likes: req.userId
+            }
+        }, {
+            new: true,
+        }
+        );
+        res.status(200).json({
+            result: data,
+            message: "liked",
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: "Failed to add like!",
+        })
+    }
+})
+// Unlike post
+posts.put("/unlike/post", checkLogin, async (req, res) => {
+    console.log(req.body.id);
+    try {
+        const data = await Post.findOneAndUpdate(
+            { _id: req.body.id }, {
+            $pull: {
+                likes: req.userId
+            }
+        }, {
+            new: true,
+        }
+        );
+        if (data) {
+            res.status(200).json({
+                message: "unliked",
+                data
+            })
+        }
+    } catch (error) {
+        console.log(error);
     }
 })
 
